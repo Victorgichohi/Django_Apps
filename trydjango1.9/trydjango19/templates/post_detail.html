@@ -7,7 +7,13 @@
 <h1>some weird render dudeee</h1>
 
 
-
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% for obj in object_list %}
 {{obj.title}}<br>
 
