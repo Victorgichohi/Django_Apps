@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Posts</title>
+	<title>Post Detail</title>
 </head>
 <body>
 <h1>some weird render dudeee</h1>
@@ -9,7 +9,7 @@
 
 
 {% for obj in object_list %}
-<a href='{% url "detail" id=obj.id %}'>{{obj.title}}<br></a>
+{{obj.title}}<br>
 
 {{obj.content}}<br>
 {{obj.timestamp}}<br>
