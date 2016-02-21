@@ -1,27 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Post Detail</title>
-</head>
-<body>
-<h1>some weird render dudeee</h1>
+{% extends "base.html" %}
 
 
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-{% for obj in object_list %}
-{{obj.title}}<br>
+{% block head_title %}
+{{ instance.title }} | {{ block.super }}
+{% endblock head_title %}
 
-{{obj.content}}<br>
-{{obj.timestamp}}<br>
-{{obj.update}}<br>
-{{obj.id}}<br>
-<hr>
-{% endfor %}
-</body>
-</html>
+
+
+{% block content %}
+<h1>{{ title }}</h1>
+
+
+{{ instance.title }}<br/>
+{{ instance.content }}<br/>
+{{ instance.timestamp }}<br/>
+{{ instance.updated }}<br/>
+{{ instance.id }}<br/>
+
+{% endblock content %}

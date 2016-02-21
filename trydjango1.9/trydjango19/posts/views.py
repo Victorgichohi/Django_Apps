@@ -1,6 +1,6 @@
 from django.http import HttpResponse,HttpResponseRedirect
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib import messages
 
 from .forms import PostForm
@@ -32,14 +32,15 @@ def post_detail(request, id=None):
 	
 	return render(request, "post_detail.html" ,context)
 
-def post_list(request):
-	queryset=Post.objects.all()
-	context={
-	"object_list":queryset
-	}
 
-	return render(request,"index.html",context)
-	# return HttpResponse("<h1>list</h1>")
+def post_list(request):
+	queryset = Post.objects.all()
+	context = {
+		"object_list": queryset, 
+		"title": "List"
+	}
+	return render(request, "post_list.html", context)
+
 
 def post_update(request, id=None):
 	instance=get_object_or_404(Post, id=id)
@@ -61,5 +62,9 @@ def post_update(request, id=None):
 	
 	return render(request, "post_form.html" ,context)
 
-def post_delete(request):
-	return HttpResponse("<h1>delete</h1>")
+def post_delete(request, id=None):
+	instance=get_object_or_404(Post, id=id)
+	instance.delete()
+	messages.success(request, "successfully deleted")
+	return redirect("posts:list")
+	
