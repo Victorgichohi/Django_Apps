@@ -1,37 +1,31 @@
-from django.http import HttpResponse,HttpResponseRedirect
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 
 from .forms import PostForm
 from .models import Post
 
-# Create your views here.
 def post_create(request):
-	form = PostForm(request.POST or None , request.FILES or None)
-
+	form = PostForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
-		instance=form.save(commit=False)
+		instance = form.save(commit=False)
 		instance.save()
-		messages.success(request, "successfully created")
+		# message success
+		messages.success(request, "Successfully Created")
 		return HttpResponseRedirect(instance.get_absolute_url())
-	
-	context={
-		"form":form,
+	context = {
+		"form": form,
 	}
-	return render(request, "post_form.html" ,context)
+	return render(request, "post_form.html", context)
 
-def post_detail(request, id=None):
-	# return HttpResponse("<h1>detail</h1>")
-	instance=get_object_or_404(Post, id=id)
-	context={
+def post_detail(request, slug=None):
+	instance = get_object_or_404(Post, slug=slug)
+	context = {
 		"title": instance.title,
-		"instance":instance,
-		}
-
-	
-	return render(request, "post_detail.html" ,context)
-
+		"instance": instance,
+	}
+	return render(request, "post_detail.html", context)
 
 def post_list(request):
 	queryset_list = Post.objects.all() #.order_by("-timestamp")
@@ -56,29 +50,29 @@ def post_list(request):
 	return render(request, "post_list.html", context)
 
 
-def post_update(request, id=None):
-	instance=get_object_or_404(Post, id=id)
-	form = PostForm(request.POST or None,  request.FILES or None, instance=instance)
 
+
+
+def post_update(request, slug=None):
+	instance = get_object_or_404(Post, slug=slug)
+	form = PostForm(request.POST or None, request.FILES or None, instance=instance)
 	if form.is_valid():
-		instance=form.save(commit=False)
+		instance = form.save(commit=False)
 		instance.save()
-		messages.success(request, "successfully updated")
+		messages.success(request, "<a href='#'>Item</a> Saved", extra_tags='html_safe')
 		return HttpResponseRedirect(instance.get_absolute_url())
-	
-	
-	context={
+
+	context = {
 		"title": instance.title,
-		"instance":instance,
+		"instance": instance,
 		"form":form,
-		}
+	}
+	return render(request, "post_form.html", context)
 
-	
-	return render(request, "post_form.html" ,context)
 
-def post_delete(request, id=None):
-	instance=get_object_or_404(Post, id=id)
+
+def post_delete(request, slug=None):
+	instance = get_object_or_404(Post, slug=slug)
 	instance.delete()
-	messages.success(request, "successfully deleted")
+	messages.success(request, "Successfully deleted")
 	return redirect("posts:list")
-	
